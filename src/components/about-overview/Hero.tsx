@@ -20,51 +20,49 @@ export const Hero: React.FC = () => {
       </div>
 
       {/* Background Graphic Grid / Ambient Overlay */}
-      <div className="absolute inset-0 z-0 opacity-15 pointer-events-none">
+      <div className="absolute inset-0 z-0 opacity-25 pointer-events-none">
         <div
           className="w-full h-full"
           style={{
-            backgroundImage: `radial-gradient(#AEB0AE 1px, transparent 1px), radial-gradient(#AEB0AE 1px, #0E1A22 1px)`,
-            backgroundSize: '40px 40px',
-            backgroundPosition: '0 0, 20px 20px',
+            backgroundImage: `
+              linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: '48px 48px',
           }}
         />
       </div>
 
       {/* Subtle Gradient Glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[360px] bg-gradient-to-tr from-[#EF715A]/25 via-[#F59E0B]/10 to-transparent blur-3xl pointer-events-none rounded-full" />
+      <div className="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[360px] bg-gradient-to-tr from-[#EF715A]/20 via-[#F59E0B]/08 to-transparent blur-3xl pointer-events-none rounded-full" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
-        {/* Animated Subtitle */}
-        <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="mb-3"
-        >
-          <span className="inline-block text-sm md:text-base font-semibold tracking-widest uppercase text-[#EF715A] font-sans px-4 py-1.5 rounded-full bg-[#12202B] border border-[#3C3F45] shadow-sm backdrop-blur-sm">
-            IP3 Consulting
-          </span>
-        </motion.div>
-
-        {/* Animated Main Title */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-left">
+        {/* Editorial Title matching institutional branding in image */}
         <motion.h1
-          initial={{ opacity: 0, x: -40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-cardo font-normal tracking-tight text-[#F3F0E8] mb-6"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="editorial-hero-title text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[4.75rem] font-serif font-normal text-[#F3F0E8] leading-[1.08] tracking-tight"
         >
-          About Us
+          <span className="block mb-1 sm:mb-2">About IP3 Consulting:</span>
+          <span className="block mb-1 sm:mb-2">
+            <span className="serif-italic italic text-[#EF715A] font-serif pr-2 sm:pr-3">Translational</span>
+            <span>Policy</span>
+          </span>
+          <span className="block">
+            <span className="serif-italic italic text-[#F3F0E8] font-serif pr-2 sm:pr-3">&amp;</span>
+            <span>Systems Advisory</span>
+          </span>
         </motion.h1>
 
-        {/* Subtitle / Breadcrumb hint */}
+        {/* Subtitle / Descriptive Narrative */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
-          className="max-w-2xl mx-auto text-[#AEB0AE] text-base md:text-lg font-light leading-relaxed"
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-6 sm:mt-8 max-w-3xl text-slate-300 sm:text-[#AEB0AE] text-base sm:text-lg md:text-xl font-sans font-normal leading-relaxed"
         >
-          Pioneering translational policy solutions, strategic governance innovation, and sustainable development across the Global South.
+          We understand interconnected complexity, translate intelligence into actionable architecture, and work alongside institutions to carry solutions from policy vision through implementation, learning and scale.
         </motion.p>
       </div>
     </section>
