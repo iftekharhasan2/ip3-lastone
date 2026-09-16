@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { SlideItem } from '../types';
 import { VideoModal } from './VideoModal';
 import { GetStartedModal } from './GetStartedModal';
 import { useCMS } from '../context/CMSContext';
+
+const FALLBACK_SLIDE_IMAGES: Record<number, string> = {
+  1: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=1200&auto=format&fit=crop',
+  2: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1200&auto=format&fit=crop',
+  3: 'https://images.unsplash.com/photo-1586771107445-d3ca888129ff?q=80&w=1200&auto=format&fit=crop',
+  4: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=1200&auto=format&fit=crop',
+  5: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1200&auto=format&fit=crop',
+  6: 'https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?q=80&w=1200&auto=format&fit=crop',
+  7: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop',
+};
 
 interface PresentationSliderProps {
   slides?: SlideItem[];
@@ -45,11 +55,12 @@ export const PresentationSlider: React.FC<PresentationSliderProps> = ({
   const currentSlide = slides[safeIndex] || slides[0];
 
   // Dynamic colors resolved from slide-level overrides or global CMS theme settings
-  const activeTagColor = currentSlide.tagColor || currentSlide.accentColor || theme.heroTagColor || '#ff7e67';
   const activeTitleColor = currentSlide.titleColor || theme.heroTitleColor || '#f8fafc';
   const activeSubtitleColor = currentSlide.subtitleColor || theme.heroSubtitleColor || '#94a3b8';
   const activeButtonBg = currentSlide.ctaBgColor || currentSlide.accentColor || theme.heroButtonBgColor || '#ff7e67';
   const activeButtonText = currentSlide.ctaTextColor || theme.heroButtonTextColor || '#070d18';
+
+  const displayImage = currentSlide?.bgImage || FALLBACK_SLIDE_IMAGES[currentSlide?.id] || FALLBACK_SLIDE_IMAGES[1];
 
   const handleNext = () => {
     setIsAnimating(true);
@@ -65,14 +76,6 @@ export const PresentationSlider: React.FC<PresentationSliderProps> = ({
     const idx = slides.findIndex((s) => s.id === currentSlideId);
     const prvIdx = (idx - 1 + slides.length) % slides.length;
     onChangeSlide(slides[prvIdx].id);
-    setProgress(0);
-    setTimeout(() => setIsAnimating(false), 400);
-  };
-
-  const handleSelectSlide = (id: number) => {
-    if (id === currentSlideId) return;
-    setIsAnimating(true);
-    onChangeSlide(id);
     setProgress(0);
     setTimeout(() => setIsAnimating(false), 400);
   };
@@ -127,27 +130,32 @@ export const PresentationSlider: React.FC<PresentationSliderProps> = ({
   }, [currentSlideId, slides]);
 
   return (
-    <div className="relative w-full h-full min-h-screen bg-[#050a12] overflow-hidden select-none font-sans text-slate-100">
+    <div className="relative w-full h-full min-h-screen bg-[#050a12] overflow-hidden select-none font-sans text-slate-100 flex flex-col justify-between">
       
-      {/* Background image — rendered only when the slide actually has one.
-          No stock default and no placeholder: an unset slide is simply the
-          section's own background colour. */}
-      {currentSlide.bgImage ? (
-        <div
+      {/* Slide Image as Section Background - Clean, no overlays or shadows */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <img
           key={currentSlide.id}
-          className={`absolute inset-0 bg-cover bg-center transition-all duration-700 ease-out transform ${
+          src={displayImage}
+          alt={currentSlide.title}
+          referrerPolicy="no-referrer"
+          className={`w-full h-full object-cover transition-all duration-700 ease-out transform ${
             isAnimating ? 'scale-105 opacity-90' : 'scale-100 opacity-100'
           }`}
-          style={{ backgroundImage: `url(${currentSlide.bgImage})` }}
         />
-      ) : null}
+      </div>
 
-      {/* Main Hero Content Area */}
-      <div className="relative z-10 h-full max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-start">
+      {/* Main Section Content Area (Container Fluid: Full Width) */}
+      <div 
+        className="relative z-10 w-full flex-1 flex items-end justify-start pt-24"
+        style={{ padding: 0 }}
+      >
+        {/* Content Card (Flush to left & bottom with margin 0, clean with no shadow) */}
         <div 
-          className={`max-w-2xl text-left p-6 sm:p-8 md:p-10 rounded-2xl bg-[#081220]/85 backdrop-blur-xl border border-slate-700/60 shadow-2xl shadow-black/60 space-y-5 transition-all duration-500 ease-out transform ${
+          className={`w-[586.8px] max-w-full text-left ml-0 mb-0 p-5 sm:p-6 lg:p-7 rounded-tr-2xl rounded-br-2xl bg-[#081220]/90 backdrop-blur-xl border-y border-r border-slate-700/60 space-y-5 transition-all duration-500 ease-out transform ${
             isAnimating ? 'scale-[0.98] opacity-0 translate-y-3' : 'scale-100 opacity-100 translate-y-0'
           }`}
+          style={{ width: '586.8px', marginLeft: '0px', marginBottom: '0px' }}
         >
           {/* Hero Title */}
           <h1
@@ -190,54 +198,6 @@ export const PresentationSlider: React.FC<PresentationSliderProps> = ({
           </div>
         </div>
       </div>
-
-      {/* Navigation Arrow Controls */}
-      <div className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-20">
-        <button
-          onClick={handlePrev}
-          className="w-11 h-11 flex items-center justify-center rounded-full border border-slate-700/80 bg-[#081220]/90 hover:bg-[#0d1e33] text-slate-200 shadow-xl shadow-black/40 hover:scale-105 active:scale-95 transition-all group backdrop-blur-md cursor-pointer"
-          aria-label="Previous Slide"
-        >
-          <ChevronLeft className="w-5 h-5 text-slate-200 group-hover:text-[#ff7e67] transition-colors" />
-        </button>
-      </div>
-
-      <div className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-20">
-        <button
-          onClick={handleNext}
-          className="w-11 h-11 flex items-center justify-center rounded-full border border-slate-700/80 bg-[#081220]/90 hover:bg-[#0d1e33] text-slate-200 shadow-xl shadow-black/40 hover:scale-105 active:scale-95 transition-all group backdrop-blur-md cursor-pointer"
-          aria-label="Next Slide"
-        >
-          <ChevronRight className="w-5 h-5 text-slate-200 group-hover:text-[#ff7e67] transition-colors" />
-        </button>
-      </div>
-
-      {/* Bottom Bar: Indicators */}
-      <footer className="absolute bottom-6 sm:bottom-8 inset-x-6 sm:inset-x-12 z-20 flex justify-between items-center gap-6 pointer-events-none">
-        {/* Slide Indicators with Progress Bar */}
-        <div className="flex items-center gap-3 bg-[#081220]/90 backdrop-blur-md px-4 py-2 rounded-full border border-slate-700/80 shadow-md pointer-events-auto">
-          {slides.map((slide) => {
-            const isActive = slide.id === currentSlideId;
-            return (
-              <button
-                key={slide.id}
-                onClick={() => handleSelectSlide(slide.id)}
-                className={`group relative h-2 transition-all duration-300 rounded-full overflow-hidden cursor-pointer ${
-                  isActive ? 'w-12 bg-slate-700' : 'w-3 bg-slate-600 hover:bg-slate-400'
-                }`}
-                aria-label={`Go to slide ${slide.id}`}
-              >
-                {isActive && (
-                  <div
-                    className="absolute inset-y-0 left-0 rounded-full transition-all duration-75 ease-linear"
-                    style={{ width: `${progress}%`, backgroundColor: activeTagColor }}
-                  />
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </footer>
 
       {/* Video Modal */}
       <VideoModal

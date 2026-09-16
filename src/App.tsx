@@ -19,7 +19,7 @@ import { ContentGate } from './components/ContentGate';
 function AppContent() {
   const { data, themeMode, setThemeMode, toggleTheme } = useCMS();
 
-  const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'approach' | 'focus' | 'services'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'approach' | 'focus' | 'services'>('about');
   const [currentSlideId, setCurrentSlideId] = useState<number>(data.slides?.[0]?.id ?? 1);
   const [autoplayInterval] = useState<number>(3000);
 
@@ -99,10 +99,12 @@ function AppContent() {
   return (
     <div className="relative min-h-screen bg-[var(--bg)] text-[var(--white)] font-sans antialiased overflow-x-clip selection:bg-[#ff7e67]/30 selection:text-[#ff9d8c] transition-colors duration-250">
       {/* Header Overlay Navigation */}
-      <Navbar
-        currentPage={currentPage}
-        onNavigate={handleNavigate}
-      />
+      {currentPage !== 'about' && (
+        <Navbar
+          currentPage={currentPage}
+          onNavigate={handleNavigate}
+        />
+      )}
 
       {currentPage === 'about' ? (
         /* Dedicated Separate About Page with IP3 People sub-page */
@@ -193,7 +195,7 @@ function AppContent() {
       )}
 
       {/* Footer */}
-      <Footer />
+      {currentPage !== 'about' && <Footer />}
 
 
       {/* Interactive Action Modals */}
