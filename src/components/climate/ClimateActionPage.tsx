@@ -74,58 +74,6 @@ export default function ClimateActionPage({
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0E1A22] text-[#F3F0E8] font-sans selection:bg-[#EF715A] selection:text-white">
-      {/* 1. Sub-Header Navigation & Breadcrumbs */}
-      <div className="border-b border-[#3C3F45] bg-[#0E1A22]/90 backdrop-blur-md sticky top-16 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 text-[#AEB0AE]">
-            <button
-              onClick={onNavigateHome}
-              className="hover:text-white transition-colors cursor-pointer"
-            >
-              Home
-            </button>
-            <ChevronRight className="w-3.5 h-3.5 opacity-60" />
-            <button
-              onClick={() => onNavigateFocus?.()}
-              className="hover:text-white transition-colors cursor-pointer"
-            >
-              Focus Areas
-            </button>
-            <ChevronRight className="w-3.5 h-3.5 opacity-60" />
-            <span className="text-[#EF715A] font-semibold">
-              Climate Action, ESG &amp; Sustainability
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3 sm:gap-5 text-xs font-medium text-[#AEB0AE]">
-            <button
-              onClick={() => scrollToSection('policy-focus')}
-              className="hover:text-[#EF715A] transition-colors cursor-pointer hidden md:inline"
-            >
-              Policy Focus
-            </button>
-            <button
-              onClick={() => scrollToSection('expertise')}
-              className="hover:text-[#EF715A] transition-colors cursor-pointer hidden md:inline"
-            >
-              Expertise
-            </button>
-            <button
-              onClick={() => scrollToSection('esg-journey')}
-              className="hover:text-[#EF715A] transition-colors cursor-pointer hidden md:inline"
-            >
-              ESG Roadmap
-            </button>
-            <button
-              onClick={() => scrollToSection('circular-economy')}
-              className="hover:text-[#EF715A] transition-colors cursor-pointer hidden md:inline"
-            >
-              Circular Economy
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* Main Content Layout */}
       <main className="flex-grow">
         {/* 1. Hero Section */}

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { ChevronRight } from 'lucide-react';
 
 export interface AboutPageProps {
   darkMode?: boolean;
@@ -25,7 +26,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({
   const pulseRef = useRef<SVGCircleElement>(null);
   const litPathRef = useRef<SVGPathElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
-  const topbarRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -74,7 +74,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
       flows.forEach((el) => el.classList.add('is-in'));
     }
 
-    // Topbar state & Scroll progress
+    // Scroll progress
     let ticking = false;
     const onScroll = () => {
       if (ticking) return;
@@ -83,9 +83,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({
         const st = window.pageYOffset || document.documentElement.scrollTop;
         const h = document.documentElement.scrollHeight - window.innerHeight;
         const p = clamp(h > 0 ? st / h : 0, 0, 1);
-        if (topbarRef.current) {
-          topbarRef.current.classList.toggle('is-stuck', st > 24);
-        }
         if (progressBarRef.current) {
           progressBarRef.current.style.width = (p * 100).toFixed(2) + '%';
         }
@@ -564,29 +561,51 @@ export const AboutPage: React.FC<AboutPageProps> = ({
       </div>
       <div className="grain" aria-hidden="true" />
 
-      {/* Persistent Topbar */}
-      <header ref={topbarRef} className="topbar" id="topbar">
-        <button
-          onClick={onNavigateHome}
-          className="brand"
-          aria-label="IP3 Consulting home"
-        >
-          <b>IP3</b> <span>/ About</span>
-        </button>
-        <button
-          onClick={onOpenTalk || onNavigateContact}
-          className="topbar__cta cursor-pointer"
-        >
-          <span>Start a conversation</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
-            <path d="M5 12h14M13 6l6 6-6 6" />
-          </svg>
-        </button>
-      </header>
-
       {/* Top Scroll Progress Bar */}
       <div className="progress" aria-hidden="true">
         <div ref={progressBarRef} className="progress__bar" id="progressBar" />
+      </div>
+
+      {/* 1. Page Header & Institutional Breadcrumb with Sub-Page Switcher */}
+      <div className="border-b border-slate-800 bg-[#050a12]/90 backdrop-blur-md relative z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2 text-slate-400">
+            <button
+              onClick={onNavigateHome}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              Home
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 opacity-60" />
+            <span className="text-[#ff7e67] font-bold">
+              About Us
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 font-mono text-[11px]">
+            <span className="text-slate-500 uppercase tracking-wider hidden sm:inline text-[10px]">About Sub-Pages:</span>
+            <a
+              href="#who"
+              className="px-2.5 py-1 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors"
+            >
+              Overview
+            </a>
+            <a
+              href="#leadership"
+              className="px-2.5 py-1 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors"
+            >
+              People
+            </a>
+            <button
+              onClick={onNavigateApproach}
+              className="px-2.5 py-1 rounded-md text-[#ff7e67] bg-[#ff7e67]/10 hover:bg-[#ff7e67]/20 border border-[#ff7e67]/30 transition-all flex items-center gap-1.5 cursor-pointer font-bold"
+              title="Navigate to Our Approach Sub-Page"
+            >
+              <span>Our Approach</span>
+              <span className="text-[9px] uppercase tracking-wider bg-[#ff7e67] text-slate-950 px-1 py-0.2 rounded font-extrabold">Sub-Page</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       <main>

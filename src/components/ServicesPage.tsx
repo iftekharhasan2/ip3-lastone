@@ -100,41 +100,31 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
 
   return (
     <div className="min-h-screen bg-[#050a12] text-slate-100 font-sans selection:bg-[#ff7e67]/30 selection:text-[#ff9d8c] pb-24">
-      {/* Sticky Service Practices Switcher Bar */}
-      <div className="sticky top-0 z-40 bg-[#050a12]/95 backdrop-blur-xl border-b border-slate-800 shadow-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
-          <div className="flex items-center gap-1.5 shrink-0">
-            {ALL_SERVICE_TABS.map((tab) => {
-              const isActive = tab.id === activeSubPageId;
-              const TabIcon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => {
-                    setActiveSubPageId(tab.id);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className={`relative px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
-                    isActive
-                      ? 'bg-[#ff7e67] text-[#050a12] shadow-md shadow-[#ff7e67]/25'
-                      : 'bg-[#081220]/90 text-slate-400 hover:text-slate-100 hover:bg-slate-800/80 border border-slate-800'
-                  }`}
-                >
-                  <span className={`font-mono text-[10px] font-bold ${isActive ? 'text-[#050a12]' : 'text-[#ff7e67]'}`}>
-                    {tab.number}
-                  </span>
-                  <TabIcon className="w-3.5 h-3.5" />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
+      {/* 1. Page Header & Institutional Breadcrumb */}
+      <div className="border-b border-slate-800 bg-[#050a12]/90 backdrop-blur-md relative z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2 text-slate-400">
+            <button
+              onClick={onNavigateHome}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              Home
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 opacity-60" />
+            <button
+              onClick={() => {
+                setActiveSubPageId('sovereign-advisory');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              Services
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 opacity-60" />
+            <span className="text-[#ff7e67] font-bold">
+              {activeService.tabLabel || activeService.title}
+            </span>
           </div>
-          <button
-            onClick={onNavigateHome}
-            className="text-xs font-mono text-slate-400 hover:text-white transition-colors shrink-0 hidden md:inline cursor-pointer"
-          >
-            ← Back to Home
-          </button>
         </div>
       </div>
 

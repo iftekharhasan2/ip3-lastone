@@ -203,6 +203,7 @@ export const FocusPage: React.FC<FocusPageProps> = ({
       } else {
         setActiveTab('overview');
       }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [initialSection]);
 
@@ -218,8 +219,8 @@ export const FocusPage: React.FC<FocusPageProps> = ({
     <div className="min-h-screen bg-[#050a12] text-slate-100 font-sans antialiased">
       
       {/* 1. Page Header & Institutional Breadcrumb */}
-      <div className="border-b border-slate-800 bg-[#050a12]/90 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div className="border-b border-slate-800 bg-[#050a12]/90 backdrop-blur-md relative z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2 text-slate-400">
             <button
               onClick={onNavigateHome}
@@ -245,80 +246,6 @@ export const FocusPage: React.FC<FocusPageProps> = ({
               {activeTab === 'data' && 'Data, AI & Digital Governance'}
               {activeTab === 'climate' && 'Climate Action, ESG & Sustainability'}
             </span>
-          </div>
-
-          <div className="flex items-center gap-4 text-xs font-semibold text-slate-400">
-            <button
-              onClick={onNavigateAbout}
-              className="hover:text-white transition-colors cursor-pointer hidden sm:inline"
-            >
-              About IP3
-            </button>
-            <span className="hidden sm:inline">•</span>
-            <button
-              onClick={onNavigateApproach}
-              className="hover:text-white transition-colors cursor-pointer hidden sm:inline"
-            >
-              Approach
-            </button>
-            <span className="hidden sm:inline">•</span>
-            <button
-              onClick={onNavigateContact}
-              className="text-[#ff7e67] hover:underline cursor-pointer"
-            >
-              Advisory Desk
-            </button>
-          </div>
-        </div>
-
-        {/* Tab Navigation Strip */}
-        <div className="border-t border-slate-800/80 bg-[#081220]/60">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
-            <div className="flex items-center gap-1.5 shrink-0">
-              {[
-                { id: 'overview', label: 'All Focus Areas', icon: Layers, number: '00' },
-                { id: 'education', label: 'Education & Capacity', icon: GraduationCap, number: '01', badge: 'Focus Area' },
-                { id: 'innovation', label: 'Policy Innovation', icon: Sparkles, number: '02', badge: 'Focus Area' },
-                { id: 'data', label: 'Data & Governance', icon: ShieldCheck, number: '03', badge: 'Focus Area' },
-                { id: 'climate', label: 'Climate & ESG', icon: Leaf, number: '04' },
-              ].map((tab) => {
-                const TabIcon = tab.icon;
-                const isActive = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => {
-                      setActiveTab(tab.id as any);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    className={`relative px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
-                      isActive
-                        ? 'text-[#050a12] shadow-md shadow-black/40'
-                        : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/50'
-                    }`}
-                  >
-                    {isActive && (
-                      <motion.div
-                        layoutId="focusPagePill"
-                        className="absolute inset-0 bg-[#ff7e67] rounded-full"
-                        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                      />
-                    )}
-                    <span className={`relative z-10 font-mono text-[10px] font-bold ${isActive ? 'text-[#050a12]' : 'text-[#ff7e67]'}`}>
-                      {tab.number}
-                    </span>
-                    <TabIcon className="w-3.5 h-3.5 relative z-10" />
-                    <span className="relative z-10">{tab.label}</span>
-                    {tab.badge && !isActive && (
-                      <span className="relative z-10 text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-[#ff7e67]/20 text-[#ff7e67] border border-[#ff7e67]/40 uppercase">
-                        {tab.badge}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
           </div>
         </div>
       </div>

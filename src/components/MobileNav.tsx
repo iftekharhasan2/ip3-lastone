@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ChevronDown, ChevronRight, Search, ArrowRight, ShieldCheck, Mail, Phone } from 'lucide-react';
 import { useCMS } from '../context/CMSContext';
-import { defaultNavbarConfig } from '../data/navigationData';
+import { defaultNavbarConfig, primaryNav as defaultNavigation } from '../data/navigationData';
 
 interface MobileNavProps {
   open: boolean;
@@ -18,11 +18,49 @@ export const MobileNav: React.FC<MobileNavProps> = ({
   onNavigate,
 }) => {
   const { data } = useCMS();
-  const primaryNav = (data.navigation || []).map((item) =>
-    item.id === 'focus-areas'
-      ? { ...item, links: [], columns: [], promos: [] }
-      : item
-  );
+  const defaultAboutItem = defaultNavigation.find((i) => i.id === 'about');
+  const defaultFocusItem = defaultNavigation.find((i) => i.id === 'focus-areas');
+  const rawNavBase = (data.navigation && data.navigation.length > 0) ? [...data.navigation] : defaultNavigation;
+  // Filter out 'approach' as top-level item since it is an About Us sub-page
+  const rawNav = rawNavBase.filter((i) => i.id !== 'approach');
+
+  const primaryNav = rawNav.map((item) => {
+    if (item.id === 'about') {
+      const baseLinks = (item.links && item.links.length > 0) ? item.links : (defaultAboutItem?.links || []);
+      const links = baseLinks.map((l) => {
+        if (l.label.toLowerCase().includes('approach') || l.href.includes('approach')) {
+          return {
+            ...l,
+            label: 'Our Approach (Sub-Page)',
+            href: '/approach',
+            sectionId: '#journey',
+            page: 'approach' as const,
+            desc: l.desc || 'Six movements of reform from diagnosis to durable institutional capability',
+          };
+        }
+        return l;
+      });
+
+      if (!links.some((l) => l.href.includes('approach') || l.label.toLowerCase().includes('approach'))) {
+        links.push({
+          label: 'Our Approach (Sub-Page)',
+          href: '/approach',
+          sectionId: '#journey',
+          page: 'approach' as const,
+          desc: 'Six movements of reform from diagnosis to durable institutional capability',
+        });
+      }
+
+      const columns = (item.columns && item.columns.length > 0) ? item.columns : (defaultAboutItem?.columns || []);
+
+      return { ...item, links, columns };
+    }
+    if (item.id === 'focus-areas') {
+      const base = (!item.links || item.links.length === 0) ? (defaultFocusItem || item) : item;
+      return { ...base, columns: [] };
+    }
+    return { ...item, columns: item.columns || [] };
+  });
   const navbar = {
     ...defaultNavbarConfig,
     ...(data.navbar || {}),
@@ -39,13 +77,32 @@ export const MobileNav: React.FC<MobileNavProps> = ({
     e.preventDefault();
     onClose();
 
-    if (page && onNavigate) {
-      onNavigate(page, sectionId);
+    let targetPage = page;
+    let targetSection = sectionId;
+
+    if (!targetPage) {
+      if (href.startsWith('/about')) {
+        targetPage = 'about';
+        targetSection = href.includes('#') ? href.slice(href.indexOf('#')) : '#overview';
+      } else if (href.startsWith('/focus')) {
+        targetPage = 'focus';
+        targetSection = href.includes('#') ? href.slice(href.indexOf('#')) : '#overview';
+      } else if (href.startsWith('/services')) {
+        targetPage = 'services';
+        targetSection = href.includes('#') ? href.slice(href.indexOf('#')) : '#services';
+      } else if (href.startsWith('/approach')) {
+        targetPage = 'approach';
+        targetSection = href.includes('#') ? href.slice(href.indexOf('#')) : undefined;
+      }
+    }
+
+    if (targetPage && onNavigate) {
+      onNavigate(targetPage, targetSection);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
-    const targetId = sectionId || href;
+    const targetId = targetSection || href;
     if (targetId.startsWith('#')) {
       const el = document.querySelector(targetId);
       if (el) {

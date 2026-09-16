@@ -6,7 +6,7 @@ import { MegaMenu } from './MegaMenu';
 import { MobileNav } from './MobileNav';
 import { SearchOverlay } from './SearchOverlay';
 import type { PrimaryNavItem } from '../data/navigationData';
-import { defaultNavbarConfig } from '../data/navigationData';
+import { defaultNavbarConfig, primaryNav as defaultNavigation } from '../data/navigationData';
 import { useCMS } from '../context/CMSContext';
 
 interface NavbarProps {
@@ -19,11 +19,61 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigate,
 }) => {
   const { data } = useCMS();
-  const primaryNav = (data.navigation || []).map((item) =>
-    item.id === 'focus-areas'
-      ? { ...item, links: [], columns: [], promos: [] }
-      : item
-  );
+  const defaultAboutItem = defaultNavigation.find((i) => i.id === 'about');
+  const defaultFocusItem = defaultNavigation.find((i) => i.id === 'focus-areas');
+  const rawNavBase = (data.navigation && data.navigation.length > 0) ? [...data.navigation] : defaultNavigation;
+  // Ensure 'approach' is strictly an About Us sub-page and not a top-level item
+  const rawNav = rawNavBase.filter((i) => i.id !== 'approach');
+
+  const primaryNav = rawNav.map((item) => {
+    if (item.id === 'about') {
+      const baseLinks = (item.links && item.links.length > 0) ? item.links : (defaultAboutItem?.links || []);
+      const links = baseLinks.map((l) => {
+        if (l.label.toLowerCase().includes('approach') || l.href.includes('approach')) {
+          return {
+            ...l,
+            label: 'Our Approach (Sub-Page)',
+            href: '/approach',
+            sectionId: '#journey',
+            page: 'approach' as const,
+            desc: l.desc || 'Six movements of reform from diagnosis to durable institutional capability',
+          };
+        }
+        return l;
+      });
+
+      // If approach is not yet in about links, append it
+      if (!links.some((l) => l.href.includes('approach') || l.label.toLowerCase().includes('approach'))) {
+        links.push({
+          label: 'Our Approach (Sub-Page)',
+          href: '/approach',
+          sectionId: '#journey',
+          page: 'approach' as const,
+          desc: 'Six movements of reform from diagnosis to durable institutional capability',
+        });
+      }
+
+      const promos = (item.promos && item.promos.length > 0 ? item.promos : (defaultAboutItem?.promos || [])).map((p) => {
+        if (p.eyebrow.toLowerCase().includes('approach') || p.href.includes('approach')) {
+          return {
+            ...p,
+            eyebrow: 'OUR APPROACH SUB-PAGE',
+            href: '/approach',
+          };
+        }
+        return p;
+      });
+
+      const columns = (item.columns && item.columns.length > 0) ? item.columns : (defaultAboutItem?.columns || []);
+
+      return { ...item, links, promos, columns };
+    }
+    if (item.id === 'focus-areas') {
+      const base = (!item.links || item.links.length === 0) ? (defaultFocusItem || item) : item;
+      return { ...base, columns: [] };
+    }
+    return { ...item, columns: item.columns || [] };
+  });
   const navbar = {
     ...defaultNavbarConfig,
     ...(data.navbar || {}),
@@ -190,11 +240,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                   );
                   const isOpen = hasSubPages && openMenu === item.id;
                   const isCurrentPage = 
-                    (item.id === 'about' && currentPage === 'about') ||
+                    (item.id === 'about' && (currentPage === 'about' || currentPage === 'approach')) ||
                     (item.id === 'focus-areas' && currentPage === 'focus') ||
-                    (item.id === 'services' && currentPage === 'services') ||
-                    (item.id === 'approach' && currentPage === 'approach') ||
-                    (item.id === 'research' && currentPage === 'approach');
+                    (item.id === 'services' && currentPage === 'services');
 
                   return (
                     <li

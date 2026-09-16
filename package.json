@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "node server.js",
     "build": "vite build",
-    "start": "cross-env NODE_ENV=production node server.js",
+    "start": "node server.js",
     "preview": "npm run build && npm run start",
     "db:seed": "tsx scripts/seed.ts",
     "db:seed:force": "tsx scripts/seed.ts --force",

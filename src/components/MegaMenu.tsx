@@ -13,18 +13,53 @@ interface MegaMenuProps {
 export const MegaMenu: React.FC<MegaMenuProps> = ({ item, onClose, onNavigate }) => {
   const { data } = useCMS();
   const badge = data.navbar?.megaMenuBadge ?? defaultNavbarConfig.megaMenuBadge;
+  const hasColumns = Boolean(item.columns && item.columns.length > 0);
+  const hasPromos = Boolean(item.promos && item.promos.length > 0);
+
+  let linksSpan = 'lg:col-span-4 border-r border-slate-800/80 pr-0 lg:pr-8';
+  let columnsSpan = 'lg:col-span-4';
+  let promosSpan = 'lg:col-span-4';
+
+  if (!hasColumns && hasPromos) {
+    linksSpan = 'lg:col-span-7 border-r border-slate-800/80 pr-0 lg:pr-8';
+    promosSpan = 'lg:col-span-5';
+  } else if (hasColumns && !hasPromos) {
+    linksSpan = 'lg:col-span-5 border-r border-slate-800/80 pr-0 lg:pr-8';
+    columnsSpan = 'lg:col-span-7';
+  } else if (!hasColumns && !hasPromos) {
+    linksSpan = 'lg:col-span-12';
+  }
 
   const handleLinkClick = (e: React.MouseEvent, href: string, sectionId?: string, page?: 'home' | 'about' | 'approach' | 'focus' | 'services') => {
     e.preventDefault();
     onClose();
 
-    if (page && onNavigate) {
-      onNavigate(page, sectionId);
+    let targetPage = page;
+    let targetSection = sectionId;
+
+    if (!targetPage) {
+      if (href.startsWith('/about')) {
+        targetPage = 'about';
+        targetSection = href.includes('#') ? href.slice(href.indexOf('#')) : '#overview';
+      } else if (href.startsWith('/focus')) {
+        targetPage = 'focus';
+        targetSection = href.includes('#') ? href.slice(href.indexOf('#')) : '#overview';
+      } else if (href.startsWith('/services')) {
+        targetPage = 'services';
+        targetSection = href.includes('#') ? href.slice(href.indexOf('#')) : '#services';
+      } else if (href.startsWith('/approach')) {
+        targetPage = 'approach';
+        targetSection = href.includes('#') ? href.slice(href.indexOf('#')) : undefined;
+      }
+    }
+
+    if (targetPage && onNavigate) {
+      onNavigate(targetPage, targetSection);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
-    const targetId = sectionId || href;
+    const targetId = targetSection || href;
     if (targetId.startsWith('#')) {
       const el = document.querySelector(targetId);
       if (el) {
@@ -46,7 +81,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ item, onClose, onNavigate })
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Primary Column / Main Links */}
-          <div className="lg:col-span-4 border-r border-slate-800/80 pr-0 lg:pr-8 space-y-4">
+          <div className={`${linksSpan} space-y-4`}>
             <div className="flex items-center justify-between pb-2 border-b border-slate-800">
               <span className="text-xs font-bold uppercase tracking-wider text-[#ff7e67] flex items-center gap-1.5 font-mono">
                 <span>{item.label}</span>
@@ -82,64 +117,68 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ item, onClose, onNavigate })
           </div>
 
           {/* Grouped Columns */}
-          <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {item.columns.map((column, i) => (
-              <div key={column.title || `col-${i}`} className="space-y-3">
-                {column.title && (
-                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400 block pb-1 border-b border-slate-800/80">
-                    {column.title}
-                  </span>
-                )}
-                <ul className="space-y-2">
-                  {column.links.map((link) => (
-                    <li key={link.label}>
-                      <a
-                        href={link.href}
-                        onClick={(e) => handleLinkClick(e, link.href, link.sectionId, link.page)}
-                        className="text-xs text-slate-300 hover:text-[#ff7e67] transition-colors flex items-center gap-1.5 group py-1 cursor-pointer"
-                      >
-                        <ChevronRight className="w-3 h-3 text-slate-600 group-hover:text-[#ff7e67] group-hover:translate-x-0.5 transition-all" />
-                        <span className="truncate">{link.label}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          {hasColumns && (
+            <div className={`${columnsSpan} grid grid-cols-1 sm:grid-cols-2 gap-6`}>
+              {item.columns.map((column, i) => (
+                <div key={column.title || `col-${i}`} className="space-y-3">
+                  {column.title && (
+                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400 block pb-1 border-b border-slate-800/80">
+                      {column.title}
+                    </span>
+                  )}
+                  <ul className="space-y-2">
+                    {column.links.map((link) => (
+                      <li key={link.label}>
+                        <a
+                          href={link.href}
+                          onClick={(e) => handleLinkClick(e, link.href, link.sectionId, link.page)}
+                          className="text-xs text-slate-300 hover:text-[#ff7e67] transition-colors flex items-center gap-1.5 group py-1 cursor-pointer"
+                        >
+                          <ChevronRight className="w-3 h-3 text-slate-600 group-hover:text-[#ff7e67] group-hover:translate-x-0.5 transition-all" />
+                          <span className="truncate">{link.label}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Editorial Promos */}
-          <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-            {item.promos.map((promo, i) => (
-              <a
-                key={promo.title}
-                href={promo.href}
-                onClick={(e) => handleLinkClick(e, promo.href)}
-                className="group relative flex items-center gap-3.5 p-3 rounded-xl bg-[#081220] border border-slate-800 hover:border-[#ff7e67]/60 shadow-md transition-all overflow-hidden cursor-pointer"
-              >
-                <div className="w-20 h-16 rounded-lg overflow-hidden shrink-0 bg-[#0a182b] relative">
-                  <img
-                    src={promo.image}
-                    alt={promo.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-[#050a12]/30"></div>
-                </div>
+          {hasPromos && (
+            <div className={`${promosSpan} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4`}>
+              {item.promos.map((promo, i) => (
+                <a
+                  key={promo.title}
+                  href={promo.href}
+                  onClick={(e) => handleLinkClick(e, promo.href)}
+                  className="group relative flex items-center gap-3.5 p-3 rounded-xl bg-[#081220] border border-slate-800 hover:border-[#ff7e67]/60 shadow-md transition-all overflow-hidden cursor-pointer"
+                >
+                  <div className="w-20 h-16 rounded-lg overflow-hidden shrink-0 bg-[#0a182b] relative">
+                    <img
+                      src={promo.image}
+                      alt={promo.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-[#050a12]/30"></div>
+                  </div>
 
-                <div className="min-w-0 flex-1">
-                  <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#ff7e67] font-bold block mb-1">
-                    {promo.eyebrow}
-                  </span>
-                  <h4 className="text-xs font-bold text-slate-100 group-hover:text-[#ff7e67] transition-colors line-clamp-2 leading-snug">
-                    {promo.title}
-                  </h4>
-                </div>
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#ff7e67] font-bold block mb-1">
+                      {promo.eyebrow}
+                    </span>
+                    <h4 className="text-xs font-bold text-slate-100 group-hover:text-[#ff7e67] transition-colors line-clamp-2 leading-snug">
+                      {promo.title}
+                    </h4>
+                  </div>
 
-                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#ff7e67] group-hover:translate-x-1 transition-all shrink-0" />
-              </a>
-            ))}
-          </div>
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#ff7e67] group-hover:translate-x-1 transition-all shrink-0" />
+                </a>
+              ))}
+            </div>
+          )}
 
         </div>
       </div>

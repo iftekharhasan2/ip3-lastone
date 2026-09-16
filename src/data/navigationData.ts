@@ -39,23 +39,18 @@ export const primaryNav: PrimaryNavItem[] = [
     links: [
       { label: 'Overview', href: '/about#overview', sectionId: '#overview', page: 'about', desc: 'Mission, institutional heritage, ecosystem & four strategic fronts' },
       { label: 'IP3 People', href: '/about#people', sectionId: '#people', page: 'about', desc: 'Global faculty of economists, researchers, fellows & executive leadership' },
-      { label: 'Approach', href: '/about#approach', sectionId: '#approach', page: 'about', desc: '6-stage delivery lifecycle from complexity & evidence to sustainable handover' },
+      { label: 'Our Approach (Sub-Page)', href: '/approach', sectionId: '#journey', page: 'approach', desc: 'Six movements of reform from diagnosis to durable institutional capability' },
     ],
     columns: [
       {
-        title: 'About Sub-Pages',
+        title: 'Our Approach Sub-Page',
         links: [
-          { label: '01. Overview', href: '/about#overview', sectionId: '#overview', page: 'about' },
-          { label: '02. IP3 People', href: '/about#people', sectionId: '#people', page: 'about' },
-          { label: '03. Approach', href: '/about#approach', sectionId: '#approach', page: 'about' },
-        ],
-      },
-      {
-        title: 'Institutional Governance',
-        links: [
-          { label: 'Mission & Operating Model', href: '/about#overview', sectionId: '#overview', page: 'about' },
-          { label: 'Faculty & Global Fellows', href: '/about#people', sectionId: '#people', page: 'about' },
-          { label: 'Delivery Lifecycle', href: '/about#approach', sectionId: '#approach', page: 'about' },
+          { label: 'Current → Desired State', href: '/approach#journey', sectionId: '#journey', page: 'approach', desc: 'Diagnostic framing from fragmentation to decision-grade clarity' },
+          { label: 'Six Movements of Reform', href: '/approach#pathway', sectionId: '#pathway', page: 'approach', desc: 'Sense, Build Intelligence, Co-Design & Test, Mobilise, Implement, Learn & Scale' },
+          { label: 'How We Work (Principles)', href: '/approach#principles', sectionId: '#principles', page: 'approach', desc: 'Six core commitments and multi-level resolution models' },
+          { label: 'Human-Centered Design', href: '/approach#people', sectionId: '#people', page: 'approach', desc: 'Iterative design cycle with the people who live the system' },
+          { label: 'Disciplined Frameworks', href: '/approach#frameworks', sectionId: '#frameworks', page: 'approach', desc: 'Actionable architecture, poly-solution models & collaboration matrices' },
+          { label: 'Client Capability & Outcomes', href: '/approach#outcomes', sectionId: '#outcomes', page: 'approach', desc: 'Seven core transformation shifts & 10 key institutional deliverable blueprints' },
         ],
       },
     ],
@@ -67,10 +62,10 @@ export const primaryNav: PrimaryNavItem[] = [
         href: '/about#people',
       },
       {
-        eyebrow: 'OUR APPROACH',
-        title: 'The 6-stage lifecycle from systemic complexity to sustainable sovereign delivery',
+        eyebrow: 'OUR APPROACH SUB-PAGE',
+        title: 'Reform as a Movement: Six movements from diagnosis to durable institutional capability',
         image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800',
-        href: '/about#approach',
+        href: '/approach',
       },
     ],
   },
@@ -80,9 +75,28 @@ export const primaryNav: PrimaryNavItem[] = [
     href: '/focus',
     sectionId: '#focus-areas',
     page: 'focus',
-    links: [],
+    links: [
+      { label: 'Strategic Pillars Overview', href: '/focus#overview', sectionId: '#overview', page: 'focus', desc: 'Whole-systems policy architecture across climate, education, digital governance & action research' },
+      { label: 'Education & Capacity Development', href: '/focus#education', sectionId: '#education', page: 'focus', desc: 'Foundational learning systems, teacher professional development & pedagogical reform' },
+      { label: 'Policy Innovation & Action Research', href: '/focus#innovation', sectionId: '#innovation', page: 'focus', desc: 'Translational laboratories, regulatory sandboxes & iterative governance experiments' },
+      { label: 'Data, AI & Digital Governance', href: '/focus#data', sectionId: '#data', page: 'focus', desc: 'Sovereign data ecosystems, algorithmic accountability & modern public administration' },
+      { label: 'Climate Action & Sustainability', href: '/focus#climate', sectionId: '#climate', page: 'focus', desc: 'Green transition engines, circular economy, industrial decarbonization & ESG excellence' },
+    ],
     columns: [],
-    promos: [],
+    promos: [
+      {
+        eyebrow: 'FOCUS 01 • EDUCATION',
+        title: 'Transforming foundational learning and workforce capability systems',
+        image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800',
+        href: '/focus#education',
+      },
+      {
+        eyebrow: 'FOCUS 04 • CLIMATE & ESG',
+        title: 'Actionable decarbonization and circular economic transition roadmaps',
+        image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&q=80&w=800',
+        href: '/focus#climate',
+      },
+    ],
   },
   {
     id: 'services',
@@ -97,26 +111,7 @@ export const primaryNav: PrimaryNavItem[] = [
       { label: 'Monitoring & Evaluation (MERLA)', href: '/services#merla', sectionId: '#merla', page: 'services', desc: 'Impact evaluation, results frameworks & digital monitoring' },
       { label: 'Macro & Sector Policy Advisory', href: '/services#macro-policy', sectionId: '#macro-policy', page: 'services', desc: 'Fiscal frameworks, industrial policy & structural reforms' },
     ],
-    columns: [
-      {
-        title: 'Analytical & Survey Practices',
-        links: [
-          { label: '01. Economic Assessment', href: '/services#economic', sectionId: '#economic', page: 'services' },
-          { label: '02. Climate Action & ESG', href: '/services#climate', sectionId: '#climate', page: 'services' },
-          { label: '03. Program & Survey Design', href: '/services#design', sectionId: '#design', page: 'services' },
-          { label: '04. MERLA Solutions', href: '/services#merla', sectionId: '#merla', page: 'services' },
-        ],
-      },
-      {
-        title: 'Advisory & Systems',
-        links: [
-          { label: 'Macro & Sector Advisory', href: '/services#macro-policy', sectionId: '#macro-policy', page: 'services' },
-          { label: 'Digital Transformation Systems', href: '/services#digital-systems', sectionId: '#digital-systems', page: 'services' },
-          { label: 'Institutional Capacity Building', href: '/services#capacity-building', sectionId: '#capacity-building', page: 'services' },
-          { label: 'All Practice Deliverables', href: '/services', sectionId: '#services', page: 'services' },
-        ],
-      },
-    ],
+    columns: [],
     promos: [
       {
         eyebrow: 'PRACTICE 01 • ECONOMIC',

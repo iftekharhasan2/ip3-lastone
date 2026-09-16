@@ -98,13 +98,11 @@ function AppContent() {
 
   return (
     <div className="relative min-h-screen bg-[var(--bg)] text-[var(--white)] font-sans antialiased overflow-x-clip selection:bg-[#ff7e67]/30 selection:text-[#ff9d8c] transition-colors duration-250">
-      {/* Header Overlay Navigation */}
-      {currentPage !== 'about' && (
-        <Navbar
-          currentPage={currentPage}
-          onNavigate={handleNavigate}
-        />
-      )}
+      {/* Header Overlay Navigation - Common for all pages */}
+      <Navbar
+        currentPage={currentPage}
+        onNavigate={handleNavigate}
+      />
 
       {currentPage === 'about' ? (
         /* Dedicated Separate About Page with IP3 People sub-page */
@@ -127,6 +125,10 @@ function AppContent() {
         <ApproachPage
           onNavigateHome={() => handleNavigate('home', '#hero')}
           onNavigateContact={() => handleNavigate('home', '#contact-advisory')}
+          onNavigateAbout={() => handleNavigate('about')}
+          onNavigateFocus={(sectionId) => handleNavigate('focus', sectionId)}
+          onNavigateServices={(serviceId) => handleNavigate('services', serviceId)}
+          onOpenTalk={() => setIsTalkModalOpen(true)}
         />
       ) : currentPage === 'focus' ? (
         /* Dedicated Separate Focus Page */
