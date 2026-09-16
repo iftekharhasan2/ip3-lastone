@@ -24,7 +24,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({
   const storyCanvasRef = useRef<HTMLCanvasElement>(null);
   const pulseRef = useRef<SVGCircleElement>(null);
   const litPathRef = useRef<SVGPathElement>(null);
-  const spineFillRef = useRef<HTMLSpanElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const topbarRef = useRef<HTMLElement>(null);
 
@@ -90,9 +89,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({
         if (progressBarRef.current) {
           progressBarRef.current.style.width = (p * 100).toFixed(2) + '%';
         }
-        if (spineFillRef.current) {
-          spineFillRef.current.style.height = `calc(${(p * 100).toFixed(2)}% + ${(p * 5).toFixed(1)}rem)`;
-        }
         ticking = false;
       });
     };
@@ -100,14 +96,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
     window.addEventListener('resize', onScroll, { passive: true });
     onScroll();
 
-    // Spine active section detection & dynamic hue
-    const spineLinks = container.querySelectorAll<HTMLAnchorElement>('#spine a');
-    const spineMap: Record<string, HTMLAnchorElement> = {};
-    spineLinks.forEach((a) => {
-      const id = a.getAttribute('href')?.replace('#', '');
-      if (id) spineMap[id] = a;
-    });
-
+    // Section active detection & dynamic hue
     const secIds = ['who', 'dna', 'purpose', 'story', 'deliver', 'leadership'];
     const secElements = secIds.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
     const HUE_MAP: Record<string, number> = {
@@ -120,14 +109,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({
     };
 
     let so: IntersectionObserver | null = null;
-    if ('IntersectionObserver' in window && spineLinks.length) {
+    if ('IntersectionObserver' in window && secElements.length) {
       so = new IntersectionObserver(
         (entries) => {
           entries.forEach((e) => {
             if (e.isIntersecting) {
-              spineLinks.forEach((l) => l.removeAttribute('aria-current'));
-              const targetLink = spineMap[e.target.id];
-              if (targetLink) targetLink.setAttribute('aria-current', 'true');
               if (HUE_MAP[e.target.id] != null && containerRef.current) {
                 containerRef.current.style.setProperty('--hue', String(HUE_MAP[e.target.id]));
               }
@@ -560,14 +546,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({
     };
   }, []);
 
-  const handleSpineClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   return (
     <div ref={containerRef} className="about-deck js selection:bg-[#db7850] selection:text-[#0a1218]">
       {/* Accessibility Skip Link */}
@@ -606,54 +584,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({
         </button>
       </header>
 
-      {/* Mobile Top Progress Bar */}
+      {/* Top Scroll Progress Bar */}
       <div className="progress" aria-hidden="true">
         <div ref={progressBarRef} className="progress__bar" id="progressBar" />
       </div>
-
-      {/* Desktop Connective Spine Navigation */}
-      <nav className="spine" id="spine" aria-label="Section progress">
-        <ol>
-          <span className="spine__track" />
-          <span ref={spineFillRef} className="spine__fill" id="spineFill" />
-          <li>
-            <a href="#who" onClick={(e) => handleSpineClick(e, 'who')}>
-              <span className="spine__dot" />
-              <span className="spine__label">Who We Are</span>
-            </a>
-          </li>
-          <li>
-            <a href="#dna" onClick={(e) => handleSpineClick(e, 'dna')}>
-              <span className="spine__dot" />
-              <span className="spine__label">Organizational DNA</span>
-            </a>
-          </li>
-          <li>
-            <a href="#purpose" onClick={(e) => handleSpineClick(e, 'purpose')}>
-              <span className="spine__dot" />
-              <span className="spine__label">Vision &amp; Mission</span>
-            </a>
-          </li>
-          <li>
-            <a href="#story" onClick={(e) => handleSpineClick(e, 'story')}>
-              <span className="spine__dot" />
-              <span className="spine__label">Our Story</span>
-            </a>
-          </li>
-          <li>
-            <a href="#deliver" onClick={(e) => handleSpineClick(e, 'deliver')}>
-              <span className="spine__dot" />
-              <span className="spine__label">How We Deliver</span>
-            </a>
-          </li>
-          <li>
-            <a href="#leadership" onClick={(e) => handleSpineClick(e, 'leadership')}>
-              <span className="spine__dot" />
-              <span className="spine__label">Leadership</span>
-            </a>
-          </li>
-        </ol>
-      </nav>
 
       <main>
         {/* ===================== HERO ===================== */}
