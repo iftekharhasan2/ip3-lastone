@@ -259,7 +259,7 @@ export const PolySolutionsSection: React.FC<PolySolutionsSectionProps> = ({
     <section
       id="polysolutions-section"
       ref={sectionRef}
-      className="relative w-full bg-[#050a12] pt-8 sm:pt-14 pb-20 sm:pb-32 px-4 sm:px-6 lg:px-10 border-t-0 select-text"
+      className="relative w-full bg-[#050a12] mt-16 sm:mt-24 pt-16 sm:pt-24 pb-20 sm:pb-32 px-4 sm:px-6 lg:px-10 border-t border-slate-800/80 select-text"
     >
       {/* Background Ambient Glow Gradients */}
       <div className="absolute top-1/6 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-[#ff7e67]/5 rounded-full blur-[150px] pointer-events-none" />
@@ -323,11 +323,20 @@ export const PolySolutionsSection: React.FC<PolySolutionsSectionProps> = ({
                   className="theme-horizon-block w-full flex flex-col space-y-6 sm:space-y-8 pt-2 pb-14 sm:pb-20 border-b border-slate-800/60 last:border-b-0"
                 >
                   {/* Horizon Header */}
-                  <div className={`flex flex-col space-y-3 ${idx === 1 ? 'w-full max-w-none' : 'max-w-4xl'}`}>
+                  <div className={`flex flex-col space-y-3 ${idx === 0 || idx === 1 ? 'w-full max-w-none' : 'max-w-4xl'}`}>
                     <h3
-                      className="font-serif font-bold text-slate-100 tracking-tight leading-[1.08]"
+                      className={`font-serif font-bold text-slate-100 tracking-tight leading-[1.08] ${
+                        idx === 0 ? 'whitespace-nowrap overflow-visible' : ''
+                      }`}
                       style={{
-                        ...(idx === 0 ? { fontSize: '65px' } : {}),
+                        ...(idx === 0
+                          ? {
+                              fontSize: 'clamp(22px, 3.4vw, 54px)',
+                              whiteSpace: 'nowrap',
+                              width: 'max-content',
+                              maxWidth: '100%',
+                            }
+                          : {}),
                         ...(idx === 1 ? { fontSize: '55px', width: '8960px', maxWidth: '100%' } : {}),
                         ...(idx === 2 ? { fontSize: '65px', width: '600px', maxWidth: '100%' } : {}),
                         ...(idx >= 3 ? { fontSize: '52px' } : {}),

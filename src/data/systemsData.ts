@@ -1,4 +1,4 @@
-export type SystemNodeId = 'institutions' | 'policy' | 'evidence' | 'technology' | 'finance' | 'core';
+export type SystemNodeId = 'institutions' | 'policy' | 'evidence' | 'technology' | 'finance' | 'delivery' | 'core';
 
 export interface SystemNodeInfo {
   id: SystemNodeId;
@@ -202,6 +202,33 @@ export const SYSTEM_NODES: Record<SystemNodeId, SystemNodeInfo> = {
       title: 'Decarbonization Blended Capital Facility',
       context: 'Financing the conversion of 5,000 public municipal transit vehicles to clean battery electric.',
       outcome: 'Secured $620M in commercial syndicated debt backed by a $110M sovereign climate guarantee.'
+    }
+  },
+  delivery: {
+    id: 'delivery',
+    label: 'Delivery & Adaptive Learning',
+    category: 'Implementation & Scale Engine',
+    tagline: 'Cabinet Delivery Units, Operational Telemetry & Capability Transfer',
+    description: 'Standing up dedicated delivery units, installing real-time execution telemetry, and transferring operational capability to domestic civil servants.',
+    extendedOverview: 'Reform cannot end with statutory passage. IP3 embeds agile delivery units inside key ministries, deploying real-time milestone telemetry and structured competency transfer tracks to ensure public systems operate autonomously and iterate continuously.',
+    color: '#10b981',
+    connections: ['technology', 'finance', 'core'],
+    keyCapabilities: [
+      'Cabinet-Level Delivery Unit (PMO) Setup',
+      'Real-Time Milestone Telemetry Dashboards',
+      'Civil Service Competency Upskilling',
+      'Adaptive MERLA & Feedback Recalibration',
+      'National Sovereign Memory Codification'
+    ],
+    metrics: [
+      { label: 'On-Time Milestone Rate', value: '98.6%', subtext: 'Delivery unit sprint achievement' },
+      { label: 'Capability Transfer', value: '100%', subtext: 'Autonomous civil service operation' },
+      { label: 'Feedback Latency', value: '<72 hrs', subtext: 'Real-time adaptive policy adjustment' }
+    ],
+    caseStudyHighlight: {
+      title: 'National Sovereign Delivery Unit & Telemetry Desk',
+      context: 'Establishing multi-agency tracking dashboard for 12 parallel economic diversification programs.',
+      outcome: 'Achieved 96% on-time milestone delivery across 4 ministries with complete domestic handover in 18 months.'
     }
   }
 };

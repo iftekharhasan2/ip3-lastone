@@ -19,7 +19,7 @@ import { ContentGate } from './components/ContentGate';
 function AppContent() {
   const { data, themeMode, setThemeMode, toggleTheme } = useCMS();
 
-  const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'approach' | 'focus' | 'services'>('about');
+  const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'approach' | 'focus' | 'services'>('home');
   const [currentSlideId, setCurrentSlideId] = useState<number>(data.slides?.[0]?.id ?? 1);
   const [autoplayInterval] = useState<number>(3000);
 

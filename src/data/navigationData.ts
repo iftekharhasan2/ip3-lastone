@@ -80,47 +80,9 @@ export const primaryNav: PrimaryNavItem[] = [
     href: '/focus',
     sectionId: '#focus-areas',
     page: 'focus',
-    links: [
-      { label: 'Education & Capacity Development', href: '/focus#education', sectionId: '#education', page: 'focus', desc: 'Transformative learning, dynamic pedagogy & curriculum reform' },
-      { label: 'Public Policy Innovation', href: '/focus#innovation', sectionId: '#innovation', page: 'focus', desc: 'Policy sandboxes, evidence synthesis & action research frameworks' },
-      { label: 'Data & Digital Governance', href: '/focus#data', sectionId: '#data', page: 'focus', desc: 'National data architecture, municipal telemetry & AI governance' },
-      { label: 'Climate Action & Sustainability', href: '/focus#climate', sectionId: '#climate', page: 'focus', desc: 'Decarbonization audits, circular economy & industrial ESG roadmaps' },
-    ],
-    columns: [
-      {
-        title: 'Focus Area Sub-Pages',
-        links: [
-          { label: '01. Education & Capacity', href: '/focus#education', sectionId: '#education', page: 'focus' },
-          { label: '02. Policy Innovation', href: '/focus#innovation', sectionId: '#innovation', page: 'focus' },
-          { label: '03. Data & Governance', href: '/focus#data', sectionId: '#data', page: 'focus' },
-          { label: '04. Climate Action & ESG', href: '/focus#climate', sectionId: '#climate', page: 'focus' },
-          { label: '00. All Strategic Pillars', href: '/focus#overview', sectionId: '#overview', page: 'focus' },
-        ],
-      },
-      {
-        title: 'Institutional Pillars',
-        links: [
-          { label: 'Transformative Learning', href: '/focus#education', sectionId: '#education', page: 'focus' },
-          { label: 'Policy Sandboxes & Pilots', href: '/focus#innovation', sectionId: '#innovation', page: 'focus' },
-          { label: 'Sovereign Data Infrastructure', href: '/focus#data', sectionId: '#data', page: 'focus' },
-          { label: 'Decarbonization Pathways', href: '/focus#climate', sectionId: '#climate', page: 'focus' },
-        ],
-      },
-    ],
-    promos: [
-      {
-        eyebrow: 'CORE FOCUS • EDUCATION',
-        title: 'Educational Innovation & Transformative Pedagogy in Emerging Markets',
-        image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=800',
-        href: '/focus#education',
-      },
-      {
-        eyebrow: 'CORE FOCUS • INNOVATION',
-        title: 'Public Policy Innovation & Action Research Sandboxes',
-        image: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80&w=800',
-        href: '/focus#innovation',
-      },
-    ],
+    links: [],
+    columns: [],
+    promos: [],
   },
   {
     id: 'services',

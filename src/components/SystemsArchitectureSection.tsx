@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowUpRight } from 'lucide-react';
 import { useCMS } from '../context/CMSContext';
 import { defaultSystemsHero } from '../data/defaultContent';
 import { OrbitalSystem } from './OrbitalSystem';
@@ -25,45 +24,12 @@ export const SystemsArchitectureSection: React.FC = () => {
     1: 'policy',
     2: 'technology',
     3: 'evidence',
+    4: 'finance',
+    5: 'delivery',
   };
 
   const handleSelectNode = (nodeId: SystemNodeId) => {
-    if (nodeId === 'institutions') {
-      setSelectedStoryNodeId('institutions');
-      setActiveStoryThemeIndex(0);
-      setTimeout(() => {
-        const el = document.getElementById('polysolutions-master-card') || document.getElementById('polysolutions-section');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
-      return;
-    }
-    if (nodeId === 'policy') {
-      setSelectedStoryNodeId('policy');
-      setActiveStoryThemeIndex(1);
-      setTimeout(() => {
-        const el = document.getElementById('polysolutions-master-card') || document.getElementById('polysolutions-section');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
-      return;
-    }
-    if (nodeId === 'technology') {
-      setSelectedStoryNodeId('technology');
-      setActiveStoryThemeIndex(2);
-      setTimeout(() => {
-        const el = document.getElementById('polysolutions-master-card') || document.getElementById('polysolutions-section');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
-      return;
-    }
-    if (nodeId === 'evidence') {
-      setSelectedStoryNodeId('evidence');
-      setActiveStoryThemeIndex(3);
-      setTimeout(() => {
-        const el = document.getElementById('polysolutions-master-card') || document.getElementById('polysolutions-section');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
-      return;
-    }
+    setSelectedStoryNodeId(nodeId);
     setInspectedNodeId(nodeId);
   };
 
@@ -135,32 +101,6 @@ export const SystemsArchitectureSection: React.FC = () => {
             >
               {hero.description}
             </motion.p>
-
-            {/* Action CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="flex flex-wrap items-center justify-center gap-4 pt-2"
-            >
-              <button
-                id="hero-explore-systems-btn"
-                onClick={() => {
-                  setActiveStoryThemeIndex(0);
-                  setSelectedStoryNodeId('institutions');
-                  setIsStoryOpen(true);
-                  setTimeout(() => {
-                    const el = document.getElementById('polysolutions-master-card') || document.getElementById('polysolutions-section');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }, 100);
-                }}
-                className="group relative inline-flex items-center gap-2.5 bg-[#ff7e67] hover:bg-[#ff8f7b] active:bg-[#f26249] text-[#070d18] font-mono font-bold text-xs sm:text-[13px] tracking-wider uppercase px-7 py-3.5 rounded-full transition-all duration-200 shadow-[0_4px_24px_rgba(255,126,103,0.35)] hover:shadow-[0_6px_30px_rgba(255,126,103,0.5)] cursor-pointer"
-              >
-                <span>{hero.exploreBtnText}</span>
-                <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </button>
-            </motion.div>
           </div>
 
           {/* Full-width Diagram: IP3 Center Hub + 4 Connected Cards (image.png layout) */}

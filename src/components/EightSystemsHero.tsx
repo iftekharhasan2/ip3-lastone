@@ -137,13 +137,14 @@ export const EightSystemsHero: React.FC<EightSystemsHeroProps> = ({
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="space-y-1 w-[710px] pl-1 sm:pl-2 pt-1 pb-1 max-w-full"
+          className="pl-1 sm:pl-2 pt-1 pb-1 w-full max-w-none"
         >
           <h1
-            className={`${getFontClass()} text-4xl sm:text-5xl md:text-6xl lg:text-[70px] leading-[1.08] sm:leading-[1.06] tracking-[-0.025em] text-slate-100 font-normal`}
+            className={`${getFontClass()} leading-[1.08] sm:leading-[1.06] tracking-[-0.025em] text-slate-100 font-normal whitespace-nowrap overflow-visible`}
+            style={{ fontSize: 'clamp(22px, 3.8vw, 64px)' }}
           >
-            <span className="block">Eight systems. One</span>
-            <span className="block text-slate-300">overlapping reality.</span>
+            <span className="inline">Eight systems. One </span>
+            <span className="inline text-slate-300">overlapping reality.</span>
           </h1>
         </motion.div>
 

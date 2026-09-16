@@ -1,6 +1,6 @@
 import React from 'react';
 import { SYSTEM_NODES, SystemNodeId } from '../data/systemsData';
-import { ArrowUpRight, Landmark, Scale, BarChart3, Binary, Coins, Layers } from 'lucide-react';
+import { ArrowUpRight, Landmark, Scale, BarChart3, Binary, Coins, Layers, Activity } from 'lucide-react';
 
 interface SystemsOverviewGridProps {
   onSelectNode: (nodeId: SystemNodeId) => void;
@@ -21,6 +21,8 @@ export const SystemsOverviewGrid: React.FC<SystemsOverviewGridProps> = ({ onSele
         return <Binary className="w-5 h-5 text-[#ff7e67]" />;
       case 'finance':
         return <Coins className="w-5 h-5 text-[#ff7e67]" />;
+      case 'delivery':
+        return <Activity className="w-5 h-5 text-[#ff7e67]" />;
       case 'core':
       default:
         return <Layers className="w-5 h-5 text-[#ff7e67]" />;

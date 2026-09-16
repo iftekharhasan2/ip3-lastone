@@ -18,7 +18,11 @@ export const MobileNav: React.FC<MobileNavProps> = ({
   onNavigate,
 }) => {
   const { data } = useCMS();
-  const primaryNav = data.navigation || [];
+  const primaryNav = (data.navigation || []).map((item) =>
+    item.id === 'focus-areas'
+      ? { ...item, links: [], columns: [], promos: [] }
+      : item
+  );
   const navbar = {
     ...defaultNavbarConfig,
     ...(data.navbar || {}),
@@ -122,7 +126,26 @@ export const MobileNav: React.FC<MobileNavProps> = ({
             {/* Nav Accordion List */}
             <div className="flex-1 overflow-y-auto p-4 space-y-2 divide-y divide-slate-800">
               {primaryNav.map((item) => {
-                const isExpanded = expandedItem === item.id;
+                const hasSubPages = Boolean(
+                  (item.links && item.links.length > 0) ||
+                  (item.columns && item.columns.length > 0)
+                );
+                const isExpanded = hasSubPages && expandedItem === item.id;
+
+                if (!hasSubPages) {
+                  return (
+                    <div key={item.id} className="pt-2 first:pt-0">
+                      <a
+                        href={item.href}
+                        onClick={(e) => handleLinkClick(e, item.href, item.sectionId, item.page)}
+                        className="w-full flex items-center justify-between py-2 text-left text-xs font-bold font-mono uppercase tracking-wider text-slate-200 hover:text-[#ff7e67] transition-colors cursor-pointer"
+                      >
+                        <span>{item.label}</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
+                      </a>
+                    </div>
+                  );
+                }
 
                 return (
                   <div key={item.id} className="pt-2 first:pt-0">

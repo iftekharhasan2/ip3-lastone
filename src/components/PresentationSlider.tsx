@@ -147,11 +147,13 @@ export const PresentationSlider: React.FC<PresentationSliderProps> = ({
 
       {/* Main Section Content Area (Container Fluid: Full Width) */}
       <div 
+        id="hero-content-area"
         className="relative z-10 w-full flex-1 flex items-end justify-start pt-24"
         style={{ padding: 0 }}
       >
         {/* Content Card (Flush to left & bottom with margin 0, clean with no shadow) */}
         <div 
+          id="hero-content-card"
           className={`w-[586.8px] max-w-full text-left ml-0 mb-0 p-5 sm:p-6 lg:p-7 rounded-tr-2xl rounded-br-2xl bg-[#081220]/90 backdrop-blur-xl border-y border-r border-slate-700/60 space-y-5 transition-all duration-500 ease-out transform ${
             isAnimating ? 'scale-[0.98] opacity-0 translate-y-3' : 'scale-100 opacity-100 translate-y-0'
           }`}

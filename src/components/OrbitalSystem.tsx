@@ -34,9 +34,19 @@ export const OrbitalSystem: React.FC<OrbitalSystemProps> = ({
   const card1Ref = useRef<HTMLDivElement>(null);
   const card2Ref = useRef<HTMLDivElement>(null);
   const card3Ref = useRef<HTMLDivElement>(null);
+  const card4Ref = useRef<HTMLDivElement>(null);
+  const card5Ref = useRef<HTMLDivElement>(null);
 
-  const cardRefs = [card0Ref, card1Ref, card2Ref, card3Ref];
-  const [paths, setPaths] = useState<string[]>([]);
+  const cardRefs = [card0Ref, card1Ref, card2Ref, card3Ref, card4Ref, card5Ref];
+
+  interface ConnectorPath {
+    d: string;
+    startX: number;
+    startY: number;
+    endX: number;
+    endY: number;
+  }
+  const [connectors, setConnectors] = useState<ConnectorPath[]>([]);
 
   const cards: SpectrumCardData[] = [
     {
@@ -56,7 +66,8 @@ export const OrbitalSystem: React.FC<OrbitalSystemProps> = ({
       themeIndex: 1,
       number: '02',
       topAccentColor: 'bg-[#2dd4bf]',
-      title: 'Translation, not theory',
+      title: 'Translation, not',
+      titleBreak: 'theory',
       description: 'Evidence moves through architecture, delivery and learning.',
       hoverBorder: 'hover:border-[#2dd4bf]/60',
       hoverGlow: 'hover:shadow-[0_12px_36px_rgba(45,212,191,0.14)]',
@@ -67,7 +78,8 @@ export const OrbitalSystem: React.FC<OrbitalSystemProps> = ({
       themeIndex: 2,
       number: '03',
       topAccentColor: 'bg-[#f59e0b]',
-      title: 'Thinking that ships',
+      title: 'Thinking that',
+      titleBreak: 'ships',
       description: 'Research and practical intelligence designed to move decisions.',
       hoverBorder: 'hover:border-[#f59e0b]/60',
       hoverGlow: 'hover:shadow-[0_12px_36px_rgba(245,158,11,0.14)]',
@@ -85,28 +97,37 @@ export const OrbitalSystem: React.FC<OrbitalSystemProps> = ({
       hoverGlow: 'hover:shadow-[0_12px_36px_rgba(168,85,247,0.14)]',
       lineColor: '#a855f7',
     },
+    {
+      id: 'finance',
+      themeIndex: 4,
+      number: '05',
+      topAccentColor: 'bg-[#38bdf8]',
+      title: 'Capital that',
+      titleBreak: 'unlocks',
+      description: 'Blended facilities and green investment pathways derisking private capital.',
+      hoverBorder: 'hover:border-[#38bdf8]/60',
+      hoverGlow: 'hover:shadow-[0_12px_36px_rgba(56,189,248,0.14)]',
+      lineColor: '#38bdf8',
+    },
+    {
+      id: 'delivery',
+      themeIndex: 5,
+      number: '06',
+      topAccentColor: 'bg-[#10b981]',
+      title: 'Delivery & learning',
+      titleBreak: 'at scale',
+      description: 'Autonomous delivery units and feedback loops that codify lasting reform.',
+      hoverBorder: 'hover:border-[#10b981]/60',
+      hoverGlow: 'hover:shadow-[0_12px_36px_rgba(16,185,129,0.14)]',
+      lineColor: '#10b981',
+    },
   ];
 
   const handleNodeClick = (nodeId: SystemNodeId) => {
     onSelectNode(nodeId);
-    const targetMap: Record<SystemNodeId, string> = {
-      institutions: '#polysolutions-section',
-      policy: '#polysolutions-section',
-      technology: '#polysolutions-section',
-      evidence: '#polysolutions-section',
-      finance: '#about',
-      core: '#polysolutions-section',
-    };
-    const targetSelector = targetMap[nodeId];
-    if (targetSelector) {
-      const el = document.querySelector(targetSelector);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
   };
 
-  // Recalculate curved connector lines dynamically
+  // Recalculate curved connector lines dynamically connecting to each card's button
   useEffect(() => {
     const updateCurves = () => {
       if (!containerRef.current || !ip3Ref.current) return;
@@ -114,38 +135,48 @@ export const OrbitalSystem: React.FC<OrbitalSystemProps> = ({
       const iRect = ip3Ref.current.getBoundingClientRect();
 
       const startX = iRect.left - cRect.left + iRect.width / 2;
-      const startY = iRect.bottom - cRect.top - 6;
+      const startY = iRect.bottom - cRect.top - 4;
 
-      const newPaths: string[] = [];
+      const newConnectors: ConnectorPath[] = [];
 
       cardRefs.forEach((ref, index) => {
-        if (!ref.current) return;
-        const cardRect = ref.current.getBoundingClientRect();
+        const cardEl = ref.current;
+        if (!cardEl) return;
+
+        const cardRect = cardEl.getBoundingClientRect();
         const cardLeft = cardRect.left - cRect.left;
         const cardTop = cardRect.top - cRect.top;
         const cardWidth = cardRect.width;
 
-        // Custom entry X ratio and end arc offsets matching image.png
-        let entryXRatio = 0.65;
-        let endXRatio = 0.35;
-        let endYOffset = 135;
+        // Custom entry X ratio along the card top edge
+        let entryXRatio = 0.5;
+        let endXRatio = 0.5;
+        let endYOffset = 130;
 
         if (index === 0) {
-          entryXRatio = 0.65;
-          endXRatio = 0.35;
-          endYOffset = 140;
+          entryXRatio = 0.70;
+          endXRatio = 0.30;
+          endYOffset = 135;
         } else if (index === 1) {
-          entryXRatio = 0.58;
-          endXRatio = 0.36;
+          entryXRatio = 0.62;
+          endXRatio = 0.34;
           endYOffset = 130;
         } else if (index === 2) {
-          entryXRatio = 0.42;
-          endXRatio = 0.64;
-          endYOffset = 130;
+          entryXRatio = 0.54;
+          endXRatio = 0.38;
+          endYOffset = 125;
         } else if (index === 3) {
-          entryXRatio = 0.45;
+          entryXRatio = 0.46;
+          endXRatio = 0.62;
+          endYOffset = 125;
+        } else if (index === 4) {
+          entryXRatio = 0.38;
+          endXRatio = 0.66;
+          endYOffset = 130;
+        } else if (index === 5) {
+          entryXRatio = 0.30;
           endXRatio = 0.70;
-          endYOffset = 140;
+          endYOffset = 135;
         }
 
         const entryX = cardLeft + cardWidth * entryXRatio;
@@ -153,25 +184,28 @@ export const OrbitalSystem: React.FC<OrbitalSystemProps> = ({
         const endX = cardLeft + cardWidth * endXRatio;
         const endY = cardTop + endYOffset;
 
-        // Bezier curve from bottom of IP3 hub down to card top edge
+        // 1. Bezier curve from bottom of IP3 hub down to card top edge
         const deltaX = entryX - startX;
         const cp1X = startX + deltaX * 0.35;
         const cp1Y = startY + 30;
         const cp2X = entryX - deltaX * 0.1;
         const cp2Y = entryY - 25;
 
-        // Continuation arc looping inside the card toward the title
+        // 2. Continuation arc looping inside the card toward the title
         const innerCpX = entryX;
-        const innerCpY = entryY + 45;
+        const innerCpY = entryY + 40;
 
-        const d = `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${entryX} ${entryY} C ${innerCpX} ${innerCpY}, ${endX} ${endY - 30}, ${endX} ${endY}`;
-        newPaths.push(d);
+        const d = `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${entryX} ${entryY} C ${innerCpX} ${innerCpY}, ${endX} ${endY - 25}, ${endX} ${endY}`;
+        newConnectors.push({ d, startX, startY, endX, endY });
       });
 
-      setPaths(newPaths);
+      setConnectors(newConnectors);
     };
 
     updateCurves();
+
+    // Recompute after quick layout paint
+    const t = setTimeout(updateCurves, 50);
 
     const resizeObserver = new ResizeObserver(() => {
       updateCurves();
@@ -183,6 +217,7 @@ export const OrbitalSystem: React.FC<OrbitalSystemProps> = ({
     window.addEventListener('resize', updateCurves);
 
     return () => {
+      clearTimeout(t);
       resizeObserver.disconnect();
       window.removeEventListener('resize', updateCurves);
     };
@@ -194,9 +229,9 @@ export const OrbitalSystem: React.FC<OrbitalSystemProps> = ({
       id="orbital-system-container"
       className={`relative w-full max-w-7xl mx-auto flex flex-col items-center select-none pt-2 pb-10 ${className}`}
     >
-      {/* SVG Connector Rays & Inside-Card Loops Overlay */}
+      {/* SVG Connector Rays to Buttons Overlay */}
       <svg
-        className="hidden lg:block absolute inset-0 w-full h-full pointer-events-none z-10 transition-opacity duration-500"
+        className="hidden md:block absolute inset-0 w-full h-full pointer-events-none z-10 transition-opacity duration-500"
       >
         <defs>
           <filter id="cyanGlow" x="-20%" y="-20%" width="140%" height="140%">
@@ -205,23 +240,62 @@ export const OrbitalSystem: React.FC<OrbitalSystemProps> = ({
           </filter>
         </defs>
 
-        {paths.map((pathString, index) => {
+        {/* Origin connector ring at bottom of IP3 hub */}
+        {connectors.length > 0 && (
+          <circle
+            cx={connectors[0].startX}
+            cy={connectors[0].startY}
+            r={hoveredNode === 'core' ? 5 : 3.5}
+            fill="#38d9c0"
+            filter={hoveredNode === 'core' ? 'url(#cyanGlow)' : undefined}
+            className="transition-all duration-300"
+          />
+        )}
+
+        {connectors.map((conn, index) => {
           const card = cards[index];
-          const isHighlighted = hoveredNode === card.id || selectedNodeId === card.id;
+          if (!card) return null;
+          const isHighlighted =
+            hoveredNode === card.id ||
+            selectedNodeId === card.id ||
+            hoveredNode === 'core' ||
+            selectedNodeId === 'core';
 
           return (
             <g key={`connector-${card.id}`}>
-              {/* Background ambient glow line */}
+              {/* Outer soft glow when highlighted */}
+              {isHighlighted && (
+                <path
+                  d={conn.d}
+                  fill="none"
+                  stroke={card.lineColor}
+                  strokeWidth={4.5}
+                  strokeOpacity={0.35}
+                  filter="url(#cyanGlow)"
+                  strokeLinecap="round"
+                />
+              )}
+              {/* Primary connector ray */}
               <path
-                d={pathString}
+                d={conn.d}
                 fill="none"
-                stroke={isHighlighted ? '#38d9c0' : '#2dd4bf'}
-                strokeWidth={isHighlighted ? 2.5 : 1.2}
-                strokeOpacity={isHighlighted ? 0.85 : 0.4}
-                filter={isHighlighted ? 'url(#cyanGlow)' : undefined}
+                stroke={isHighlighted ? card.lineColor : `${card.lineColor}77`}
+                strokeWidth={isHighlighted ? 2.5 : 1.3}
+                strokeOpacity={isHighlighted ? 0.95 : 0.45}
                 strokeLinecap="round"
                 className="transition-all duration-300"
               />
+              {/* Subtle terminal accent dot at curve endpoint */}
+              {isHighlighted && (
+                <circle
+                  cx={conn.endX}
+                  cy={conn.endY}
+                  r={3}
+                  fill={card.lineColor}
+                  filter="url(#cyanGlow)"
+                  className="transition-all duration-300"
+                />
+              )}
             </g>
           );
         })}
@@ -254,11 +328,12 @@ export const OrbitalSystem: React.FC<OrbitalSystemProps> = ({
         </motion.button>
       </div>
 
-      {/* 4 Cards Grid - Fully Responsive */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 w-full mt-10 sm:mt-14 z-20">
+      {/* 6 Cards Grid - Fully Responsive */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3.5 sm:gap-4 w-full mt-10 sm:mt-14 z-20">
         {cards.map((card, index) => {
           const isSelected = selectedNodeId === card.id;
           const isHovered = hoveredNode === card.id;
+          const isConnectedToCore = hoveredNode === 'core' || selectedNodeId === 'core';
 
           return (
             <motion.div
@@ -270,19 +345,19 @@ export const OrbitalSystem: React.FC<OrbitalSystemProps> = ({
               onClick={() => handleNodeClick(card.id)}
               onMouseEnter={() => setHoveredNode(card.id)}
               onMouseLeave={() => setHoveredNode(null)}
-              className={`relative flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-[#0b1524]/95 border transition-all duration-300 cursor-pointer overflow-hidden min-h-[330px] sm:min-h-[350px] group ${
-                isSelected || isHovered
+              className={`relative flex flex-col justify-between p-5 sm:p-5.5 rounded-2xl bg-[#0b1524]/95 border transition-all duration-300 cursor-pointer overflow-hidden min-h-[250px] sm:min-h-[270px] group ${
+                isSelected || isHovered || isConnectedToCore
                   ? `${card.hoverBorder} ${card.hoverGlow} bg-[#0d1a2d]`
                   : 'border-slate-800/80 hover:border-slate-700 hover:bg-[#0e1a2b]'
               }`}
             >
-              {/* Internal subtle arc for non-desktop / visual continuity */}
-              <div className="lg:hidden absolute top-0 right-14 w-28 h-28 pointer-events-none opacity-40">
+              {/* Internal subtle arc for small viewports / visual continuity */}
+              <div className="md:hidden absolute top-0 right-8 w-24 h-24 pointer-events-none opacity-30">
                 <svg viewBox="0 0 100 100" className="w-full h-full">
                   <path
-                    d={index < 2 ? "M 80 0 C 80 30, 60 50, 40 70" : "M 20 0 C 20 30, 40 50, 60 70"}
+                    d={index < 3 ? "M 80 0 C 80 30, 60 50, 40 70" : "M 20 0 C 20 30, 40 50, 60 70"}
                     fill="none"
-                    stroke="#2dd4bf"
+                    stroke={card.lineColor}
                     strokeWidth="1.5"
                     strokeLinecap="round"
                   />
@@ -290,34 +365,28 @@ export const OrbitalSystem: React.FC<OrbitalSystemProps> = ({
               </div>
 
               {/* Top Accent Pill Bar */}
-              <div className="flex items-center justify-start mb-5">
+              <div className="flex items-center justify-start mb-4">
                 <div className={`w-10 h-1 rounded-full ${card.topAccentColor}`} />
               </div>
 
               {/* Header: Number */}
-              <div className="flex items-center justify-between w-full mb-6 relative z-10">
+              <div className="flex items-center justify-between w-full mb-4 relative z-10">
                 <span className="font-mono text-xs font-semibold text-slate-400 tracking-wider">
                   {card.number}
                 </span>
               </div>
 
               {/* Content: Title and Description */}
-              <div className="space-y-3 mb-6 relative z-10">
-                <h3 className="text-xl sm:text-[22px] font-bold text-white tracking-tight leading-snug group-hover:text-slate-100 transition-colors">
+              <div className="space-y-2.5 relative z-10">
+                <h3 className="text-lg sm:text-[19px] font-bold text-white tracking-tight leading-snug group-hover:text-slate-100 transition-colors">
                   {card.title}
                   {card.titleBreak && (
                     <span className="block">{card.titleBreak}</span>
                   )}
                 </h3>
-                <p className="text-slate-400 text-sm sm:text-[14.5px] leading-relaxed font-normal">
+                <p className="text-slate-400 text-xs sm:text-[13px] leading-relaxed font-normal">
                   {card.description}
                 </p>
-              </div>
-
-              {/* Bottom Action: Enter spectrum */}
-              <div className="mt-auto pt-4 flex items-center gap-1.5 text-sm font-medium text-slate-300 group-hover:text-white transition-colors relative z-10">
-                <span>Enter spectrum</span>
-                <span className="text-base transition-transform group-hover:translate-y-1">&darr;</span>
               </div>
             </motion.div>
           );

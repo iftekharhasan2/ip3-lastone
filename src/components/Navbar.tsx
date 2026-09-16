@@ -19,7 +19,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigate,
 }) => {
   const { data } = useCMS();
-  const primaryNav = data.navigation || [];
+  const primaryNav = (data.navigation || []).map((item) =>
+    item.id === 'focus-areas'
+      ? { ...item, links: [], columns: [], promos: [] }
+      : item
+  );
   const navbar = {
     ...defaultNavbarConfig,
     ...(data.navbar || {}),
@@ -62,8 +66,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   }, [openMenu, closeMenu]);
 
   const handleEnter = (id: string) => {
-    // Only on larger screens
-    if (window.innerWidth >= 901) {
+    // Only on larger screens and only for items that have subpages
+    const item = primaryNav.find((i) => i.id === id);
+    const hasSubPages = Boolean(
+      (item?.links && item.links.length > 0) ||
+      (item?.columns && item.columns.length > 0)
+    );
+    if (window.innerWidth >= 901 && hasSubPages) {
       setOpenMenu(id);
     }
   };
@@ -175,7 +184,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             <nav className="_nav_aes6y_32 hidden lg:flex flex-1 justify-center" aria-label="Primary">
               <ul className="_navList_aes6y_38 flex items-center gap-2 xl:gap-5 h-full">
                 {primaryNav.map((item) => {
-                  const isOpen = openMenu === item.id;
+                  const hasSubPages = Boolean(
+                    (item.links && item.links.length > 0) ||
+                    (item.columns && item.columns.length > 0)
+                  );
+                  const isOpen = hasSubPages && openMenu === item.id;
                   const isCurrentPage = 
                     (item.id === 'about' && currentPage === 'about') ||
                     (item.id === 'focus-areas' && currentPage === 'focus') ||
@@ -186,20 +199,28 @@ export const Navbar: React.FC<NavbarProps> = ({
                   return (
                     <li
                       key={item.id}
-                      onMouseEnter={() => handleEnter(item.id)}
+                      id={`nav-item-${item.id}`}
+                      onMouseEnter={() => {
+                        if (hasSubPages) handleEnter(item.id);
+                      }}
                       className="relative h-full flex items-center"
                     >
                       <button
+                        id={`nav-btn-${item.id}`}
                         className={`_navLink_aes6y_45 relative px-2.5 py-2 text-xs xl:text-sm font-semibold tracking-normal transition-colors cursor-pointer flex items-center gap-1 rounded-lg ${
                           isOpen || isCurrentPage
                             ? 'text-[#ff7e67] font-bold bg-slate-800/50'
                             : 'text-slate-300 hover:text-white hover:bg-slate-800/30'
                         }`}
                         type="button"
-                        aria-expanded={isOpen}
-                        onFocus={() => handleEnter(item.id)}
+                        aria-expanded={hasSubPages ? isOpen : undefined}
+                        onFocus={() => {
+                          if (hasSubPages) handleEnter(item.id);
+                        }}
                         onClick={(e) => {
-                          if (openMenu === item.id) {
+                          if (!hasSubPages) {
+                            handleNavClick(e, item);
+                          } else if (openMenu === item.id) {
                             handleNavClick(e, item);
                           } else {
                             setOpenMenu(item.id);
@@ -207,11 +228,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                         }}
                       >
                         <span>{item.label}</span>
-                        <ChevronDown
-                          className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                            isOpen ? 'rotate-180 text-[#ff7e67]' : 'opacity-60'
-                          }`}
-                        />
+                        {hasSubPages && (
+                          <ChevronDown
+                            className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                              isOpen ? 'rotate-180 text-[#ff7e67]' : 'opacity-60'
+                            }`}
+                          />
+                        )}
                         {/* Active indicator bar */}
                         {(isOpen || isCurrentPage) && (
                           <motion.span
@@ -288,12 +311,17 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Desktop Mega Menu Dropdown */}
         <AnimatePresence>
           {openMenu && activeItemData && (
-            <MegaMenu
-              key={openMenu}
-              item={activeItemData}
-              onClose={closeMenu}
-              onNavigate={onNavigate}
-            />
+            Boolean(
+              (activeItemData.links && activeItemData.links.length > 0) ||
+              (activeItemData.columns && activeItemData.columns.length > 0)
+            ) && (
+              <MegaMenu
+                key={openMenu}
+                item={activeItemData}
+                onClose={closeMenu}
+                onNavigate={onNavigate}
+              />
+            )
           )}
         </AnimatePresence>
       </header>
