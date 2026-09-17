@@ -18,7 +18,7 @@ import { fileURLToPath } from 'url';
 import apiApp from './server/app.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PORT = Number(process.env.PORT || 3000);
+const PORT = 3000;
 const isProd = process.env.NODE_ENV === 'production';
 
 const app = express();
@@ -71,7 +71,7 @@ const server = app.listen(PORT, '0.0.0.0', () => {
 
 server.on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
-    console.error(`\n[IP3 Platform] Port ${PORT} is already in use. Try: PORT=3001 npm run dev\n`);
+    console.error(`\n[IP3 Platform] Port ${PORT} is already in use.\n`);
   } else {
     console.error('\n[IP3 Platform] Server error:', err);
   }

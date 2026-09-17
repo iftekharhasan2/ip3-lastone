@@ -36,6 +36,7 @@ import { ImageField } from './ImageField';
 import { NavigationManager } from './NavigationManager';
 import { MediaField } from './MediaField';
 import { ThemeTypographyStudio } from './ThemeTypographyStudio';
+import { SystemsManager } from './SystemsManager';
 
 interface AdminPanelModalProps {
   isOpen: boolean;
@@ -703,6 +704,9 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({ isOpen, onClos
                   </div>
                 </div>
               )}
+
+              {/* TAB: SYSTEMS & HORIZONS */}
+              {activeTab === 'systems' && <SystemsManager />}
 
               {/* TAB: THEME & COLOR STUDIO */}
               {activeTab === 'navigation' && <NavigationManager />}

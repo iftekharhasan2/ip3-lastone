@@ -354,7 +354,7 @@ export const PolySolutionsSection: React.FC<PolySolutionsSectionProps> = ({
                   {theme.id === 'polysolutions' && (
                     <div className="flex flex-col space-y-4 w-full">
                       <span className="text-xs font-mono text-[#ff7e67] uppercase tracking-wider font-semibold">
-                        Operationalized Across 8 Interconnected Realities
+                        {data.eightSystems?.badge || 'Operationalized Across 8 Interconnected Realities'}
                       </span>
                       <EightSystemsSection />
                     </div>

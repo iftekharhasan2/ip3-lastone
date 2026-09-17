@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { AnimatePresence } from 'motion/react';
-import { SYSTEMS_DATA } from '../data/systems';
+import { useCMS, defaultEightSystemsConfig } from '../context/CMSContext';
 import { SystemItem, SystemOverlap } from '../types';
 import { EightSystemsHero } from './EightSystemsHero';
 import { OverlapModal } from './OverlapModal';
 import { SystemDetailPanel } from './SystemDetailPanel';
 
 export const EightSystemsSection: React.FC = () => {
+  const { data } = useCMS();
+  const config = data.eightSystems || defaultEightSystemsConfig;
+  const systems = config.systems && config.systems.length > 0 ? config.systems : defaultEightSystemsConfig.systems;
+
   const [selectedSystemId, setSelectedSystemId] = useState<string | null>(null);
   const [hoveredSystemId, setHoveredSystemId] = useState<string | null>(null);
 
@@ -17,7 +21,7 @@ export const EightSystemsSection: React.FC = () => {
     target: SystemItem;
   } | null>(null);
 
-  const selectedSystem = SYSTEMS_DATA.find((s) => s.id === selectedSystemId) || null;
+  const selectedSystem = systems.find((s) => s.id === selectedSystemId) || null;
 
   const handleSelectSystem = (system: SystemItem) => {
     if (selectedSystemId === system.id) {
@@ -50,20 +54,22 @@ export const EightSystemsSection: React.FC = () => {
       {/* Main View Display */}
       <div className="w-full relative z-10">
         <EightSystemsHero
-          systems={SYSTEMS_DATA}
+          systems={systems}
           selectedSystemId={selectedSystemId}
           onSelectSystem={handleSelectSystem}
-          fontFamily="newsreader"
-          glowIntensity={1}
+          fontFamily={config.fontFamily || 'newsreader'}
+          glowIntensity={config.glowIntensity ?? 1}
           hoveredSystemId={hoveredSystemId}
           setHoveredSystemId={setHoveredSystemId}
+          titleMain={config.titleMain}
+          titleHighlight={config.titleHighlight}
         />
 
         {/* System Detail Panel when selected */}
         {selectedSystem && (
           <SystemDetailPanel
             system={selectedSystem}
-            allSystems={SYSTEMS_DATA}
+            allSystems={systems}
             onClose={() => setSelectedSystemId(null)}
             onSelectOverlap={handleSelectOverlap}
           />

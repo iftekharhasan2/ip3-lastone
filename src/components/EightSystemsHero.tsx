@@ -6,19 +6,24 @@ interface EightSystemsHeroProps {
   systems: SystemItem[];
   selectedSystemId: string | null;
   onSelectSystem: (system: SystemItem) => void;
-  fontFamily: 'newsreader' | 'playfair' | 'cormorant' | 'instrument';
+  fontFamily?: 'newsreader' | 'playfair' | 'cormorant' | 'instrument';
   glowIntensity?: number; // 0 to 1
   hoveredSystemId: string | null;
   setHoveredSystemId: (id: string | null) => void;
+  titleMain?: string;
+  titleHighlight?: string;
 }
 
 export const EightSystemsHero: React.FC<EightSystemsHeroProps> = ({
   systems,
   selectedSystemId,
   onSelectSystem,
-  fontFamily,
+  fontFamily = 'newsreader',
+  glowIntensity = 1,
   hoveredSystemId,
   setHoveredSystemId,
+  titleMain,
+  titleHighlight,
 }) => {
   const hasActive = selectedSystemId !== null;
 
@@ -123,8 +128,9 @@ export const EightSystemsHero: React.FC<EightSystemsHeroProps> = ({
     <div className="relative w-full select-text transition-all duration-300">
       {/* Background ambient lighting subtle glow */}
       <div
-        className="pointer-events-none absolute -left-20 top-24 w-72 h-72 rounded-full opacity-20 blur-3xl"
+        className="pointer-events-none absolute -left-20 top-24 w-72 h-72 rounded-full blur-3xl"
         style={{
+          opacity: 0.2 * (glowIntensity ?? 1),
           background:
             'radial-gradient(circle, rgba(255,126,103,0.2) 0%, rgba(45,212,191,0.1) 70%, transparent 100%)',
         }}
@@ -143,8 +149,8 @@ export const EightSystemsHero: React.FC<EightSystemsHeroProps> = ({
             className={`${getFontClass()} leading-[1.08] sm:leading-[1.06] tracking-[-0.025em] text-slate-100 font-normal whitespace-nowrap overflow-visible`}
             style={{ fontSize: 'clamp(22px, 3.8vw, 64px)' }}
           >
-            <span className="inline">Eight systems. One </span>
-            <span className="inline text-slate-300">overlapping reality.</span>
+            <span className="inline">{titleMain || 'Eight systems. One '}</span>
+            <span className="inline text-slate-300">{titleHighlight || 'overlapping reality.'}</span>
           </h1>
         </motion.div>
 

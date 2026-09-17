@@ -30,10 +30,12 @@ import {
   SiteThemeConfig,
   StoryTheme,
   SystemsHeroSectionData,
+  EightSystemsConfig,
 } from '../types';
 
 import { defaultSlides } from './slides';
 import { defaultMovie } from './movieData';
+import { SYSTEMS_DATA } from './systems';
 import {
   ip3OfficeInfo,
   consultingServices as defaultServices,
@@ -73,6 +75,7 @@ export interface WebsiteData {
   themeConfig: SiteThemeConfig;
   storyThemes?: StoryTheme[];
   systemsHero?: SystemsHeroSectionData;
+  eightSystems?: EightSystemsConfig;
   /** Site navigation: mega-menu columns, links and promos. */
   navigation: PrimaryNavItem[];
   /** Navbar chrome: brand, CTA, top bar, search. */
@@ -881,6 +884,15 @@ export const defaultStoryThemes: StoryTheme[] = [
   },
 ];
 
+export const defaultEightSystemsConfig: EightSystemsConfig = {
+  badge: 'Operationalized Across 8 Interconnected Realities',
+  titleMain: 'Eight systems. One ',
+  titleHighlight: 'overlapping reality.',
+  fontFamily: 'newsreader',
+  glowIntensity: 1,
+  systems: SYSTEMS_DATA,
+};
+
 export const defaultSystemsHero: SystemsHeroSectionData = {
   badge: 'POLICY STUDIO • SYSTEMS INTEGRATOR • IMPLEMENTATION ARCHITECTS',
   titlePrefix: 'Built for the',
@@ -913,6 +925,7 @@ export const DEFAULT_WEBSITE_DATA: WebsiteData = {
   themeConfig: defaultThemeConfig,
   storyThemes: defaultStoryThemes,
   systemsHero: defaultSystemsHero,
+  eightSystems: defaultEightSystemsConfig,
   navigation: defaultNavigation,
   navbar: defaultNavbarConfig,
   timeSlots: defaultTimeSlots,

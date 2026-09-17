@@ -527,6 +527,15 @@ export interface SystemsHeroSectionData {
   consultBtnText: string;
 }
 
+export interface EightSystemsConfig {
+  badge: string;
+  titleMain: string;
+  titleHighlight: string;
+  fontFamily?: 'newsreader' | 'playfair' | 'cormorant' | 'instrument';
+  glowIntensity?: number;
+  systems: SystemItem[];
+}
+
 
 
 

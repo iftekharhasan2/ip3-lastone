@@ -6,11 +6,12 @@ import type {
   TeamMember, ResearchSectionData, OperationalFront, ParallaxCardItem, FocusAreaItem,
   ProjectItemData, ServiceSolutionItem, TreeFrameworkData, TrustMatrixData,
   TestimonialSectionData, SiteThemeConfig, StoryTheme, SystemsHeroSectionData,
+  EightSystemsConfig,
 } from '../types';
 
 // Defaults live in ../data/defaultContent so `npm run db:seed` can load them in
 // Node. Re-exported here because components already import them from this file.
-import { DEFAULT_WEBSITE_DATA, defaultThemeConfig } from '../data/defaultContent';
+import { DEFAULT_WEBSITE_DATA, defaultThemeConfig, defaultEightSystemsConfig } from '../data/defaultContent';
 import type { WebsiteData } from '../data/defaultContent';
 import type { PrimaryNavItem, NavbarConfig } from '../data/navigationData';
 
@@ -25,6 +26,7 @@ export {
   defaultOperationalFronts,
   defaultParallaxCards,
   defaultTeamMembers,
+  defaultEightSystemsConfig,
 } from '../data/defaultContent';
 export { primaryNav as defaultNavigation, defaultNavbarConfig } from '../data/navigationData';
 export type { PrimaryNavItem, NavLinkItem, NavColumnItem, NavPromoItem, NavbarConfig } from '../data/navigationData';
@@ -55,6 +57,7 @@ interface CMSContextType {
   updateThemeConfig: (themeConfig: SiteThemeConfig) => void;
   updateStoryThemes: (storyThemes: StoryTheme[]) => void;
   updateSystemsHero: (systemsHero: SystemsHeroSectionData) => void;
+  updateEightSystems: (eightSystems: EightSystemsConfig) => void;
   updateNavigation: (navigation: PrimaryNavItem[]) => void;
   updateNavbar: (navbar: NavbarConfig) => void;
   resetAllContent: () => void;
@@ -438,6 +441,10 @@ export const CMSProvider: React.FC<CMSProviderProps> = ({ children, readOnly = f
     setData((prev) => ({ ...prev, systemsHero }));
   };
 
+  const updateEightSystems = (eightSystems: EightSystemsConfig) => {
+    setData((prev) => ({ ...prev, eightSystems }));
+  };
+
   const updateNavigation = (navigation: PrimaryNavItem[]) => {
     setData((prev) => ({ ...prev, navigation }));
   };
@@ -499,6 +506,7 @@ export const CMSProvider: React.FC<CMSProviderProps> = ({ children, readOnly = f
         updateThemeConfig,
         updateStoryThemes,
         updateSystemsHero,
+        updateEightSystems,
         updateNavigation,
         updateNavbar,
         resetAllContent,
