@@ -41,19 +41,7 @@ export const primaryNav: PrimaryNavItem[] = [
       { label: 'IP3 People', href: '/about#people', sectionId: '#people', page: 'about', desc: 'Global faculty of economists, researchers, fellows & executive leadership' },
       { label: 'Our Approach (Sub-Page)', href: '/approach', sectionId: '#journey', page: 'approach', desc: 'Six movements of reform from diagnosis to durable institutional capability' },
     ],
-    columns: [
-      {
-        title: 'Our Approach Sub-Page',
-        links: [
-          { label: 'Current → Desired State', href: '/approach#journey', sectionId: '#journey', page: 'approach', desc: 'Diagnostic framing from fragmentation to decision-grade clarity' },
-          { label: 'Six Movements of Reform', href: '/approach#pathway', sectionId: '#pathway', page: 'approach', desc: 'Sense, Build Intelligence, Co-Design & Test, Mobilise, Implement, Learn & Scale' },
-          { label: 'How We Work (Principles)', href: '/approach#principles', sectionId: '#principles', page: 'approach', desc: 'Six core commitments and multi-level resolution models' },
-          { label: 'Human-Centered Design', href: '/approach#people', sectionId: '#people', page: 'approach', desc: 'Iterative design cycle with the people who live the system' },
-          { label: 'Disciplined Frameworks', href: '/approach#frameworks', sectionId: '#frameworks', page: 'approach', desc: 'Actionable architecture, poly-solution models & collaboration matrices' },
-          { label: 'Client Capability & Outcomes', href: '/approach#outcomes', sectionId: '#outcomes', page: 'approach', desc: 'Seven core transformation shifts & 10 key institutional deliverable blueprints' },
-        ],
-      },
-    ],
+    columns: [],
     promos: [
       {
         eyebrow: 'IP3 PEOPLE',

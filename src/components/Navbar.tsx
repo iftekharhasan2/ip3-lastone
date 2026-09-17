@@ -64,7 +64,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         return p;
       });
 
-      const columns = (item.columns && item.columns.length > 0) ? item.columns : (defaultAboutItem?.columns || []);
+      const rawColumns = (item.columns && item.columns.length > 0) ? item.columns : (defaultAboutItem?.columns || []);
+      const columns = rawColumns.filter(
+        (c) => !c.title?.toLowerCase().includes('approach')
+      );
 
       return { ...item, links, promos, columns };
     }
